@@ -136,7 +136,7 @@
 })();
 
 // ============================================================
-// CONTACT FORM (local feedback only – no server needed)
+// CONTACT FORM – sends message via WhatsApp
 // ============================================================
 (function () {
   const form = document.getElementById('contactForm');
@@ -145,17 +145,19 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    const btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = 'Mengirim…';
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.textContent = 'Kirim Pesan';
-      form.reset();
-      if (msg) {
-        msg.style.display = 'block';
-        setTimeout(() => { msg.style.display = 'none'; }, 4000);
-      }
-    }, 1200);
+    const name    = (form.querySelector('#formName')    || {}).value || '';
+    const email   = (form.querySelector('#formEmail')   || {}).value || '';
+    const message = (form.querySelector('#formMessage') || {}).value || '';
+
+    const text = encodeURIComponent(
+      'Nama: ' + name + '\nEmail: ' + email + '\nPesan: ' + message
+    );
+    window.open('https://wa.me/6281261089777?text=' + text, '_blank', 'noopener,noreferrer');
+
+    form.reset();
+    if (msg) {
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    }
   });
 })();
